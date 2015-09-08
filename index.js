@@ -4,4 +4,4 @@
  * serial number arithmetic entry point
  */
 
-module.exports = require('./lib/sna');
+module.exports = require('/lib/sna');

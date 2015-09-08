@@ -7,7 +7,7 @@ along with a variable serial number space size are supported.
 Install serial-arithmetic with:
 
 ```sh
-$ npm install serial-arithmetic
+$ npm install serial-arithmetic --save
 ```
 
 Almost all serial number methods are exposed:
@@ -38,20 +38,18 @@ Available options are:
 * options.encoding = currently supports 'BE' to encode output in big endian (for destination to network)
 * options.string = false to output as number instead of default string
 
-#### sn.add(other)
-Add another SerialNumber to sn if the other SerialNumber is in range
-```[0 .. 2 ^ (size - 1) - 1]```
-
 #### sn.getSpace([bytes])
 Retrieve the serial number space size in bits or in bytes if bytes is true.
 
+#### sn.add(other)
+Add another SerialNumber to sn if the other SerialNumber is in range
+```[0 .. 2 ^ (size - 1) - 1]```
 
 #### sn.{eq|ne}(other)
 Test equality of the sn to another SerialNumber.
 
 #### sn.{lt|le|gt|ge}(other)
 Test comparison of the sn to another SerialNumber.
-
 
 ## Tests
 The current testing framework is tape. You may need to install tape globally:
@@ -65,3 +63,6 @@ Run test script:
 ## Notes
 This package was created in hopes of being used in a future RTMP Node.js package. I'll
 try to report back here if this implementation works for that specification or not!
+
+Some of the weirder aspects of the spec made clearer by [twisted](https://github.com/twisted/twisted).
+This package is heavily modeled after their Python implementation.

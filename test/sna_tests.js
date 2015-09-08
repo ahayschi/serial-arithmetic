@@ -80,12 +80,12 @@ test('the ht and ge comparisons on 32-bit SerialNumbers', function(t) {
     t.end();
 })
 
-test('the addition op on 32-bit SerialNumbers', function(t) {
+test('the addition op errors on 32-bit SerialNumbers', function(t) {
     t.plan(2);
 
     var sn32_1 = SerialNumber(0xFFFFFFFF, 32);
     var sn32_2 = SerialNumber(-1, 32);
-    var sn32_3 = SerialNumber(0xFFFFFF, 32);
+    var sn32_3 = SerialNumber(0xFFFFFFFF, 32);
     t.throws(function () {
         sn32_1.add(sn32_2);
     }, 'exception if adding negative SN');
@@ -93,9 +93,35 @@ test('the addition op on 32-bit SerialNumbers', function(t) {
         sn32_1.add(sn32_3);
     }, 'exception if adding more than maxAdd');
 
-
     t.end();
 });
+
+test('the trivial example from 5.1 RFC 1982', function(t) {
+    t.plan(9);
+
+    var sn = SerialNumber(0, 2);
+    var sn_addOutOfRange = SerialNumber(2, 2);
+    t.throws(function () {
+        sn.add(sn_addOutOfRange);
+    }, 'exception if adding more than 1 to space of size 2');
+
+    var sn_0 = SerialNumber(0, 2);
+    var sn_1 = SerialNumber(1, 2);
+    var sn_2 = SerialNumber(2, 2);
+    var sn_3 = SerialNumber(3, 2);
+
+    var sn_add = SerialNumber(1, 2);
+    t.equal(sn.add(sn_add), 1);
+    t.ok(sn.gt(sn_0), '1 > 0 is true');
+    t.equal(sn.add(sn_add), 2);
+    t.ok(sn.gt(sn_1), '2 > 1 is true');
+    t.equal(sn.add(sn_add), 3);
+    t.ok(sn.gt(sn_2), '3 > 2 is true');
+    t.equal(sn.add(sn_add), 0);
+    t.ok(sn.gt(sn_3), '0 > 3 is true');
+
+    t.end();
+})
 
 
 

@@ -121,20 +121,72 @@ test('the trivial example from 5.1 RFC 1982', function(t) {
     t.ok(sn.gt(sn_3), '0 > 3 is true');
 
     t.end();
+});
+
+test('the larger example from 5.1 RFC 1982', function(t) {
+    t.plan(15);
+
+    var sn_0 = SerialNumber(0, 8);
+    var sn_255 = SerialNumber(255, 8);
+    var sn_100_1 = SerialNumber(100, 8);
+    var sn_200 = SerialNumber(200, 8);
+    var sn_1 = SerialNumber(1, 8);
+    var sn_100_2 = SerialNumber(100, 8);
+    var sn_44 = SerialNumber(44, 8);
+
+    t.ok(sn_1.gt(sn_0), '1 > 0');
+    t.ok(sn_44.gt(sn_0), '44 > 0');
+    t.ok(sn_100_2.gt(sn_0), '100 > 0');
+    t.ok(sn_100_2.gt(sn_44), '100 > 44');
+    t.ok(sn_200.gt(sn_100_2), '200 > 100');
+    t.ok(sn_255.gt(sn_200), '255 > 200');
+    t.ok(sn_0.gt(sn_255), '0 > 255');
+    t.ok(sn_100_2.gt(sn_255), '100 > 255');
+    t.ok(sn_0.gt(sn_200), '0 > 200');
+    t.ok(sn_44.gt(sn_200), '44 > 200');
+
+    var sn_add = SerialNumber(127, 8);
+    var sn_addOutOfRange = SerialNumber(128, 8);
+    t.throws(function () {
+        sn_0.add(sn_addOutOfRange);
+    }, 'exception if adding more than 127 to 8 bit space');
+    t.equal(sn_0.add(sn_add), 127);
+
+    t.equal(sn_255.add(sn_1), 0);
+    t.equal(sn_100_1.add(sn_100_2), 200);
+    t.equal(sn_200.add(sn_100_2), 44);
+
+    t.end();
+});
+
+test('getting number from SerialNumber', function(t) {
+    t.plan(10);
+
+    var sn = SerialNumber(255, 8);
+    t.equal(sn.getNumber(), '255');
+    t.equal(sn.getNumber({radix: 10}), '255');
+    t.equal(sn.getNumber({radix: 16}), 'ff');
+    t.equal(sn.getNumber({string: false}), 255);
+    t.equal(sn.getNumber({radix: 10, string: false}), 255);
+    t.equal(sn.getNumber({radix: 16, string: false}), 0xFF);
+
+    // Construct serial number as little endian 0x12345678 and get big endian
+    //encoded output using various options for getNumber method
+    var sn_e = SerialNumber(0x12345678, 32);
+    t.equal(sn_e.getNumber({encoding: 'BE'}), '2018915346');
+    t.equal(sn_e.getNumber({encoding: 'BE', radix: 16}), '78563412');
+    t.equal(sn_e.getNumber({encoding: 'BE', radix: 10}), '2018915346');
+    t.equal(sn_e.getNumber({encoding: 'BE', radix: 16, string: false}), 0x78563412);
+
+    t.end();
+});
+
+test('getting space from SerialNumber', function(t) {
+    t.plan(2);
+
+    var sn = SerialNumber(0xFF, 8);
+    t.equal(sn.getSpace(), 8);
+    t.equal(sn.getSpace(true), 1);
+
+    t.end();
 })
-
-
-
-
-
-
-
-// 0x0A0B0C0D (168496141)
-// 0xd0c0b0a (218893066)
-// var foo = new SerialNumber(0x0A0B0C0D, 32);
-// console.log(foo.toString());
-// console.log(foo.getNumber({radix: 10}));
-// console.log(foo.getNumber({radix: 16}));
-// console.log(foo.getNumber({encoding: 'BE'}));
-// console.log(foo.getNumber({encoding: 'BE', radix: 16}));
-// console.log(foo.getNumber({encoding: 'BE', radix: 10, string: false}));

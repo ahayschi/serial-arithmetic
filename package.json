@@ -1,0 +1,31 @@
+{
+  "name": "serial-arithmetic",
+  "version": "0.0.1",
+  "description": "serial number arithmetic for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahayschi/serial-arithmetic.git"
+  },
+  "keywords": [
+    "serial number",
+    "serial number arithmetic",
+    "arithmetic",
+    "DNS",
+    "RFC",
+    "RFC 1982",
+    "compare",
+    "add",
+    "network byte order",
+    "endianness"
+  ],
+  "author": "Alex Hays <ahays@uchicago.edu> (https://github.com/ahayschi)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ahayschi/serial-arithmetic/issues"
+  },
+  "homepage": "https://github.com/ahayschi/serial-arithmetic#readme"
+}
